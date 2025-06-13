@@ -3,27 +3,30 @@ const app = express();
 const path = require("path");
 const mongoose = require("mongoose")
 const methodOverride = require("method-override");
-const Report = require("#DBsite");
+const Report = require("./models/Report");
 const { report } = require("process");
 // const morgan = require("morgan");
-// const engine = require("ejs-mate");
+const engine = require("ejs-mate");
 
-mongoose.connect('mongodb://localhost:27017/yelpcamp', {useNewUrlParser: true, useUnifiedTopology: true,useCreateIndex:true})
-.then(()=>{
-    console.log("connected")
-})
-.catch(()=>{
-    console.log("connection error")
-    console.log(err);
-})
+// mongoose.connect('mongodb://localhost:27017/yelpcamp', {useNewUrlParser: true, useUnifiedTopology: true,useCreateIndex:true})
+// .then(()=>{
+//     console.log("connected")
+// })
+// .catch((err)=>{
+//     console.log("connection error")
+//     console.log(err);
+// })
 
-// app.engine("ejs",engine);
+app.engine("ejs",engine);
 app.use(express.static(path.join(__dirname,"public")));
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride("_method"))
 // app.use(morgan("dev"));
 app.set("view engine", "ejs");
 app.set("views",path.join(__dirname,"views"))
+
+
+
 
 //一覧
 app.get("/reports",async (req,res)=>{
@@ -73,4 +76,10 @@ app.delete('/reports/:id',async (req,res)=>{
     const {id} = req.params;
     await Report.findByIdAndDelete(id);
     res.redirect("/reportmas");
+})
+
+
+
+app.listen(3000,()=>{
+    console.log("Port 3000...")
 })
