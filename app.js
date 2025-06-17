@@ -4,18 +4,19 @@ const path = require("path");
 const mongoose = require("mongoose")
 const methodOverride = require("method-override");
 const Report = require("./models/Report");
-const { report } = require("process");
+// const { report } = require("process");　不要
 // const morgan = require("morgan");
 const engine = require("ejs-mate");
 
-// mongoose.connect('mongodb://localhost:27017/yelpcamp', {useNewUrlParser: true, useUnifiedTopology: true,useCreateIndex:true})
-// .then(()=>{
-//     console.log("connected")
-// })
-// .catch((err)=>{
-//     console.log("connection error")
-//     console.log(err);
-// })
+//mongooseに接続
+mongoose.connect('mongodb://localhost:27017/record_worktime', {useNewUrlParser: true, useUnifiedTopology: true})
+.then(()=>{
+    console.log("connected")
+})
+.catch((err)=>{
+    console.log("connection error")
+    console.log(err);
+})
 
 app.engine("ejs",engine);
 app.use(express.static(path.join(__dirname,"public")));
@@ -30,13 +31,13 @@ app.set("views",path.join(__dirname,"views"))
 
 //一覧
 app.get("/reports",async (req,res)=>{
-    const allreports = await report.find();
-    res.render("/reports/showall",{allreports});
+    const allreports = await Report.find();
+    res.render("reports/showall",{allreports});// /reports/showallだとエラー
 });
 
 //新規作成
 app.get("/reports/new",async (req,res)=>{
-    res.render("/reports/new");
+    res.render("reports/new");
 });
 
 //作成投稿
@@ -51,7 +52,7 @@ app.post("/reports",async (req,res)=>{
 app.get("/reports/:id",async (req,res)=>{
     const {id} = req.params.id;
     const report = await Report.findById();
-    res.render("/reports/show",{report});
+    res.render("reports/show",{report});
 });
 
 
@@ -59,7 +60,7 @@ app.get("/reports/:id",async (req,res)=>{
 app.get("/reports/:id/edit",async (req,res)=>{
     const {id} = req.params;
     const report = await Report.findById();
-    res.render("/reports/edit",{report});
+    res.render("reports/edit",{report});
 });
 
 

@@ -1,2 +1,7 @@
-<% layout("layouts/boilerplate") %>   
+<% layout("layouts/template") %>   
 <h1>All Reports</h1>
+<% for(let report of allreports){ %>
+    <ul>
+        <li><%= report.date %></li>
+    </ul>
+<% } %>
