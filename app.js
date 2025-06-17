@@ -40,6 +40,11 @@ app.get("/reports/new",async (req,res)=>{
     res.render("reports/new");
 });
 
+//仮のタイマーページ
+app.get("/reports/timer",async (req,res)=>{
+    res.render("timer/timer");
+});
+
 //作成投稿
 app.post("/reports",async (req,res)=>{
     const report = new Report(req.body.report)
